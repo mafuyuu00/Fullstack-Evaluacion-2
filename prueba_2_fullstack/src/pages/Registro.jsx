@@ -1,24 +1,6 @@
 import { useState } from "react";
+import { Row, Col, Card, Form, Button, Alert } from "react-bootstrap";
 import { comunasPorRegion } from "../data/regiones";
-
-const caja = { maxWidth: 560, boxSizing: "border-box", margin: "24px auto", paddingBottom: 20, border: "1px solid #cbbda9", background: "#ffffff" };
-const tituloCaja = { margin: 0, padding: "11px 16px", background: "#355e3b", color: "#ffffff", fontSize: 16 };
-const fila = { display: "flex", gap: 12, flexWrap: "wrap" };
-const campo = { marginBottom: 14 };
-const campoFila = { marginBottom: 14, flex: "1 1 200px" };
-const label = { display: "block", marginBottom: 4, fontSize: 12, textTransform: "uppercase" };
-const input = { width: "100%", boxSizing: "border-box", padding: 7, border: "1px solid #cbbda9", background: "#fffaf2", font: "inherit" };
-const ayuda = { display: "block", color: "#665b50", fontSize: 12 };
-const error = { margin: "4px 0 0", color: "#a94442", fontSize: 12 };
-const exito = { color: "#355e3b", fontWeight: "bold" };
-const botonPrincipal = {
-    padding: "8px 16px",
-    border: "1px solid #355e3b",
-    background: "#355e3b",
-    color: "#ffffff",
-    font: "inherit",
-    cursor: "pointer"
-};
 
 const soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü]+(\s+[A-Za-zÁÉÍÓÚáéíóúÑñÜü]+)*$/;
 
@@ -62,6 +44,7 @@ function Registro({ irA }) {
     const errorCorreo = correoValido(correo) ? "" : "Sólo se permiten estos dominios: @duoc.cl, @profesor.duoc.cl, @gmail.com.";
     const errorContrasena = contrasena.length >= 4 && contrasena.length <= 10 ? "" : "La contraseña debe tener entre 4 y 10 caracteres.";
     const errorConfirmar = confirmar === contrasena ? "" : "Las contraseñas no coinciden.";
+
     const errorFecha = fechaNacimiento && calcularEdad(fechaNacimiento) < 18 ? "Debes ser mayor de 18 años." : "";
     const errorTelefono = telefono && !/^\+569[0-9]{8}$/.test(telefono) ? "Ingrese un teléfono válido, por ejemplo +56912345678." : "";
 
@@ -80,123 +63,120 @@ function Registro({ irA }) {
 
     return (
         <main>
-            <section style={caja}>
-                <h1 style={tituloCaja}>Registro de usuario</h1>
+            <Row className="justify-content-center">
+                <Col md={10} lg={7}>
+                    <Card className="shadow-sm">
+                        <Card.Header as="h1" className="fs-5 bg-success text-white">Registro de usuario</Card.Header>
+                        <Card.Body>
+                            <Form noValidate onSubmit={enviar}>
+                                <Form.Group className="mb-3" controlId="run">
+                                    <Form.Label>Run</Form.Label>
+                                    <Form.Control type="text" maxLength={9} placeholder="19011029K" value={run} onChange={e => setRun(e.target.value)} isInvalid={run !== "" && errorRun !== ""} />
+                                    <Form.Text>Sin puntos ni guion. Ejemplo: 19011029K</Form.Text>
+                                    <Form.Control.Feedback type="invalid">{errorRun}</Form.Control.Feedback>
+                                </Form.Group>
 
-                <form onSubmit={enviar} style={{ padding: 16 }}>
-                    <div style={campo}>
-                        <label htmlFor="run" style={label}>Run</label>
-                        <input type="text" id="run" maxLength={9} placeholder="19011029K" value={run} onChange={e => setRun(e.target.value)} style={input} />
-                        <small style={ayuda}>Sin puntos ni guion. Ejemplo: 19011029K</small>
-                        {run && errorRun && <p style={error}>{errorRun}</p>}
-                    </div>
+                                <Row>
+                                    <Form.Group as={Col} md={6} className="mb-3" controlId="nombre">
+                                        <Form.Label>Nombre</Form.Label>
+                                        <Form.Control type="text" maxLength={50} value={nombre} onChange={e => setNombre(e.target.value)} isInvalid={nombre !== "" && errorNombre !== ""} />
+                                        <Form.Control.Feedback type="invalid">{errorNombre}</Form.Control.Feedback>
+                                    </Form.Group>
+                                    <Form.Group as={Col} md={6} className="mb-3" controlId="apellidos">
+                                        <Form.Label>Apellidos</Form.Label>
+                                        <Form.Control type="text" maxLength={100} value={apellidos} onChange={e => setApellidos(e.target.value)} isInvalid={apellidos !== "" && errorApellidos !== ""} />
+                                        <Form.Control.Feedback type="invalid">{errorApellidos}</Form.Control.Feedback>
+                                    </Form.Group>
+                                </Row>
 
-                    <div style={fila}>
-                        <div style={campoFila}>
-                            <label htmlFor="nombre" style={label}>Nombre</label>
-                            <input type="text" id="nombre" maxLength={50} value={nombre} onChange={e => setNombre(e.target.value)} style={input} />
-                            {nombre && errorNombre && <p style={error}>{errorNombre}</p>}
-                        </div>
-                        <div style={campoFila}>
-                            <label htmlFor="apellidos" style={label}>Apellidos</label>
-                            <input type="text" id="apellidos" maxLength={100} value={apellidos} onChange={e => setApellidos(e.target.value)} style={input} />
-                            {apellidos && errorApellidos && <p style={error}>{errorApellidos}</p>}
-                        </div>
-                    </div>
+                                <Form.Group className="mb-3" controlId="correo">
+                                    <Form.Label>Correo</Form.Label>
+                                    <Form.Control type="email" maxLength={100} value={correo} onChange={e => setCorreo(e.target.value)} isInvalid={correo !== "" && errorCorreo !== ""} />
+                                    <Form.Text>Sólo dominios @duoc.cl, @profesor.duoc.cl y @gmail.com</Form.Text>
+                                    <Form.Control.Feedback type="invalid">{errorCorreo}</Form.Control.Feedback>
+                                </Form.Group>
 
-                    <div style={campo}>
-                        <label htmlFor="correo" style={label}>Correo</label>
-                        <input type="email" id="correo" maxLength={100} value={correo} onChange={e => setCorreo(e.target.value)} style={input} />
-                        <small style={ayuda}>Sólo dominios @duoc.cl, @profesor.duoc.cl y @gmail.com</small>
-                        {correo && errorCorreo && <p style={error}>{errorCorreo}</p>}
-                    </div>
+                                <Row>
+                                    <Form.Group as={Col} md={6} className="mb-3" controlId="contrasena">
+                                        <Form.Label>Contraseña</Form.Label>
+                                        <Form.Control type="password" maxLength={10} value={contrasena} onChange={e => setContrasena(e.target.value)} isInvalid={contrasena !== "" && errorContrasena !== ""} />
+                                        <Form.Text>Entre 4 y 10 caracteres</Form.Text>
+                                        <Form.Control.Feedback type="invalid">{errorContrasena}</Form.Control.Feedback>
+                                    </Form.Group>
+                                    <Form.Group as={Col} md={6} className="mb-3" controlId="confirmar">
+                                        <Form.Label>Confirmar contraseña</Form.Label>
+                                        <Form.Control type="password" maxLength={10} value={confirmar} onChange={e => setConfirmar(e.target.value)} isInvalid={confirmar !== "" && errorConfirmar !== ""} />
+                                        <Form.Control.Feedback type="invalid">{errorConfirmar}</Form.Control.Feedback>
+                                    </Form.Group>
+                                </Row>
 
-                    <div style={fila}>
-                        <div style={campoFila}>
-                            <label htmlFor="contrasena" style={label}>Contraseña</label>
-                            <input type="password" id="contrasena" maxLength={10} value={contrasena} onChange={e => setContrasena(e.target.value)} style={input} />
-                            <small style={ayuda}>Entre 4 y 10 caracteres</small>
-                            {contrasena && errorContrasena && <p style={error}>{errorContrasena}</p>}
-                        </div>
-                        <div style={campoFila}>
-                            <label htmlFor="confirmar" style={label}>Confirmar contraseña</label>
-                            <input type="password" id="confirmar" maxLength={10} value={confirmar} onChange={e => setConfirmar(e.target.value)} style={input} />
-                            {confirmar && errorConfirmar && <p style={error}>{errorConfirmar}</p>}
-                        </div>
-                    </div>
+                                <Row>
+                                    <Form.Group as={Col} md={6} className="mb-3" controlId="fecha-nacimiento">
+                                        <Form.Label>Fecha de nacimiento (opcional)</Form.Label>
+                                        <Form.Control type="date" value={fechaNacimiento} onChange={e => setFechaNacimiento(e.target.value)} isInvalid={errorFecha !== ""} />
+                                        <Form.Control.Feedback type="invalid">{errorFecha}</Form.Control.Feedback>
+                                    </Form.Group>
+                                    <Form.Group as={Col} md={6} className="mb-3" controlId="telefono">
+                                        <Form.Label>Teléfono (opcional)</Form.Label>
+                                        <Form.Control
+                                            type="tel"
+                                            maxLength={15}
+                                            placeholder="+56912345678"
+                                            value={telefono}
+                                            onChange={e => setTelefono(e.target.value.replace(/[^0-9+]/g, ""))}
+                                            isInvalid={errorTelefono !== ""}
+                                        />
+                                        <Form.Control.Feedback type="invalid">{errorTelefono}</Form.Control.Feedback>
+                                    </Form.Group>
+                                </Row>
 
-                    <div style={campo}>
-                        <label htmlFor="fecha-nacimiento" style={label}>Fecha de nacimiento (opcional)</label>
-                        <input type="date" id="fecha-nacimiento" value={fechaNacimiento} onChange={e => setFechaNacimiento(e.target.value)} style={input} />
-                        {errorFecha && <p style={error}>{errorFecha}</p>}
-                    </div>
+                                <Row>
+                                    <Form.Group as={Col} md={6} className="mb-3" controlId="region">
+                                        <Form.Label>Región</Form.Label>
+                                        <Form.Select
+                                            value={region}
+                                            onChange={e => {
+                                                setRegion(e.target.value);
+                                                setComuna("");
+                                            }}
+                                        >
+                                            <option value="">-- Seleccione la región --</option>
+                                            {Object.keys(comunasPorRegion).map(nombreRegion => (
+                                                <option key={nombreRegion} value={nombreRegion}>{nombreRegion}</option>
+                                            ))}
+                                        </Form.Select>
+                                    </Form.Group>
+                                    <Form.Group as={Col} md={6} className="mb-3" controlId="comuna">
+                                        <Form.Label>Comuna</Form.Label>
+                                        <Form.Select value={comuna} onChange={e => setComuna(e.target.value)}>
+                                            <option value="">-- Seleccione la comuna --</option>
+                                            {region && comunasPorRegion[region].map(nombreComuna => (
+                                                <option key={nombreComuna} value={nombreComuna}>{nombreComuna}</option>
+                                            ))}
+                                        </Form.Select>
+                                    </Form.Group>
+                                </Row>
 
-                    <div style={campo}>
-                        <label htmlFor="telefono" style={label}>Teléfono (opcional)</label>
-                        <input
-                            type="tel"
-                            id="telefono"
-                            maxLength={15}
-                            placeholder="+56912345678"
-                            value={telefono}
-                            onChange={e => setTelefono(e.target.value.replace(/[^0-9+]/g, ""))}
-                            style={input}
-                        />
-                        {errorTelefono && <p style={error}>{errorTelefono}</p>}
-                    </div>
+                                <Form.Group className="mb-3" controlId="direccion">
+                                    <Form.Label>Dirección</Form.Label>
+                                    <Form.Control type="text" maxLength={300} value={direccion} onChange={e => setDireccion(e.target.value)} isInvalid={direccion !== "" && errorDireccion !== ""} />
+                                    <Form.Control.Feedback type="invalid">{errorDireccion}</Form.Control.Feedback>
+                                </Form.Group>
 
-                    <div style={fila}>
-                        <div style={campoFila}>
-                            <label htmlFor="region" style={label}>Región</label>
-                            <select
-                                id="region"
-                                value={region}
-                                onChange={e => {
-                                    setRegion(e.target.value);
-                                    setComuna("");
-                                }}
-                                style={input}
-                            >
-                                <option value="">-- Seleccione la región --</option>
-                                {Object.keys(comunasPorRegion).map(nombreRegion => (
-                                    <option key={nombreRegion} value={nombreRegion}>{nombreRegion}</option>
-                                ))}
-                            </select>
-                        </div>
-                        <div style={campoFila}>
-                            <label htmlFor="comuna" style={label}>Comuna</label>
-                            <select id="comuna" value={comuna} onChange={e => setComuna(e.target.value)} style={input}>
-                                <option value="">-- Seleccione la comuna --</option>
-                                {region && comunasPorRegion[region].map(nombreComuna => (
-                                    <option key={nombreComuna} value={nombreComuna}>{nombreComuna}</option>
-                                ))}
-                            </select>
-                        </div>
-                    </div>
+                                <div className="d-grid">
+                                    <Button type="submit" variant="success" disabled={!valido}>Registrar</Button>
+                                </div>
 
-                    <div style={campo}>
-                        <label htmlFor="direccion" style={label}>Dirección</label>
-                        <input type="text" id="direccion" maxLength={300} value={direccion} onChange={e => setDireccion(e.target.value)} style={input} />
-                        {direccion && errorDireccion && <p style={error}>{errorDireccion}</p>}
-                    </div>
+                                {mensaje && <Alert variant="success" className="mt-3 mb-0">{mensaje}</Alert>}
 
-                    <p style={{ textAlign: "center" }}>
-                        <button
-                            type="submit"
-                            disabled={!valido}
-                            style={valido ? botonPrincipal : { ...botonPrincipal, opacity: 0.5, cursor: "not-allowed" }}
-                        >
-                            Registrar
-                        </button>
-                    </p>
-
-                    {mensaje && <p style={exito}>{mensaje}</p>}
-
-                    <p style={{ textAlign: "center" }}>
-                        ¿Ya tienes cuenta? <a href="#" onClick={() => irA("login")} style={{ color: "#355e3b" }}>Inicia sesión</a>
-                    </p>
-                </form>
-            </section>
+                                <p className="text-center mt-3 mb-0">
+                                    ¿Ya tienes cuenta? <a href="#" onClick={() => irA("login")} className="link-success">Inicia sesión</a>
+                                </p>
+                            </Form>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
         </main>
     );
 }

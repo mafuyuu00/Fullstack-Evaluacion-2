@@ -1,48 +1,42 @@
-const header = {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    gap: 16,
-    flexWrap: "wrap",
-    padding: "12px 24px",
-    background: "#355e3b",
-    color: "#ffffff"
-};
-
-const lista = { display: "flex", gap: 12, flexWrap: "wrap", margin: 0, padding: 0, listStyle: "none" };
-const enlaceBlanco = { color: "#ffffff" };
-const enlace = { color: "#355e3b" };
+import { Navbar, Nav, Container } from "react-bootstrap";
 
 function Header({ pagina, irA, cantidad }) {
     return (
         <>
-            <header style={header}>
-                <a href="#" onClick={() => irA("inicio")} style={{ display: "flex", alignItems: "center", gap: 8, color: "#ffffff", fontWeight: "bold", textDecoration: "none" }}>
-                    <img src="/img/branding/logo.svg" alt="" width="30" height="30" />
-                    <span>Huerto Verde</span>
-                </a>
+            <Navbar bg="success" data-bs-theme="dark" expand="md">
+                <Container>
+                    <Navbar.Brand href="#" onClick={() => irA("inicio")} className="d-flex align-items-center gap-2 fw-bold">
+                        <img src="/img/branding/logo.svg" alt="" width="30" height="30" />
+                        Huerto Verde
+                    </Navbar.Brand>
 
-                <nav>
-                    <ul style={lista}>
-                        <li><a href="#" onClick={() => irA("inicio")} style={enlaceBlanco}>Home</a></li>
-                        <li><a href="#" onClick={() => irA("productos")} style={enlaceBlanco}>Productos</a></li>
-                        <li><a href="#" onClick={() => irA("nosotros")} style={enlaceBlanco}>Nosotros</a></li>
-                        <li><a href="#" onClick={() => irA("blogs")} style={enlaceBlanco}>Blogs</a></li>
-                        <li><a href="#" onClick={() => irA("contacto")} style={enlaceBlanco}>Contacto</a></li>
-                    </ul>
-                </nav>
+                    <Navbar.Toggle aria-controls="menu-principal" />
+                    <Navbar.Collapse id="menu-principal">
+                        <Nav className="me-auto">
+                            <Nav.Link href="#" onClick={() => irA("inicio")} active={pagina === "inicio"}>Home</Nav.Link>
+                            <Nav.Link href="#" onClick={() => irA("productos")} active={pagina === "productos" || pagina === "detalle"}>Productos</Nav.Link>
+                            <Nav.Link href="#" onClick={() => irA("nosotros")} active={pagina === "nosotros"}>Nosotros</Nav.Link>
+                            <Nav.Link href="#" onClick={() => irA("blogs")} active={pagina.startsWith("blog")}>Blogs</Nav.Link>
+                            <Nav.Link href="#" onClick={() => irA("contacto")} active={pagina === "contacto"}>Contacto</Nav.Link>
+                        </Nav>
 
-                <a href="#" onClick={() => irA("carrito")} style={{ display: "flex", alignItems: "center", gap: 6, color: "#ffffff" }}>
-                    <img src="/img/iconos/icono-carrito.svg" alt="" width="25" height="23" />
-                    Carrito ({cantidad})
-                </a>
-            </header>
+                        <Nav>
+                            <Nav.Link href="#" onClick={() => irA("carrito")} active={pagina === "carrito"} className="d-flex align-items-center gap-2">
+                                <img src="/img/iconos/icono-carrito.svg" alt="" width="30" height="30" className="bg-white rounded-circle p-1" />
+                                Carrito ({cantidad})
+                            </Nav.Link>
+                        </Nav>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
 
             {(pagina === "inicio" || pagina === "productos") && (
-                <div style={{ display: "flex", justifyContent: "flex-end", gap: 10, padding: "7px 24px", background: "#ead8c5" }}>
-                    <a href="#" onClick={() => irA("login")} style={enlace}>Iniciar sesión</a>
-                    <span>|</span>
-                    <a href="#" onClick={() => irA("registro")} style={enlace}>Registrar usuario</a>
+                <div className="bg-body-tertiary border-bottom py-2">
+                    <Container className="d-flex justify-content-end gap-2 small">
+                        <a href="#" onClick={() => irA("login")} className="link-success">Iniciar sesión</a>
+                        <span>|</span>
+                        <a href="#" onClick={() => irA("registro")} className="link-success">Registrar usuario</a>
+                    </Container>
                 </div>
             )}
         </>

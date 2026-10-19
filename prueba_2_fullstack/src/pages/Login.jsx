@@ -1,31 +1,5 @@
 import { useState } from "react";
-
-const logo = {
-    display: "block",
-    width: 220,
-    height: 140,
-    margin: "24px auto 8px",
-    boxSizing: "border-box",
-    objectFit: "contain",
-    border: "1px solid #cbbda9",
-    background: "#ead8c5"
-};
-const caja = { maxWidth: 560, boxSizing: "border-box", margin: "24px auto", paddingBottom: 20, border: "1px solid #cbbda9", background: "#ffffff" };
-const tituloCaja = { margin: 0, padding: "11px 16px", background: "#355e3b", color: "#ffffff", fontSize: 16 };
-const campo = { marginBottom: 14 };
-const label = { display: "block", marginBottom: 4, fontSize: 12, textTransform: "uppercase" };
-const input = { width: "100%", boxSizing: "border-box", padding: 7, border: "1px solid #cbbda9", background: "#fffaf2", font: "inherit" };
-const ayuda = { display: "block", color: "#665b50", fontSize: 12 };
-const error = { margin: "4px 0 0", color: "#a94442", fontSize: 12 };
-const exito = { color: "#355e3b", fontWeight: "bold" };
-const botonPrincipal = {
-    padding: "8px 16px",
-    border: "1px solid #355e3b",
-    background: "#355e3b",
-    color: "#ffffff",
-    font: "inherit",
-    cursor: "pointer"
-};
+import { Row, Col, Card, Form, Button, Alert, Image } from "react-bootstrap";
 
 function correoValido(correo) {
     const partes = correo.trim().toLowerCase().split("@");
@@ -57,7 +31,6 @@ function Login({ irA }) {
             localStorage.removeItem("correo-recordado");
         }
 
-        // el admin entra al panel, para el resto todavia falta el backend
         if (correo.trim().toLowerCase() === "admin@duoc.cl") {
             irA("admin");
         } else {
@@ -67,53 +40,54 @@ function Login({ irA }) {
 
     return (
         <main>
-            <div style={{ textAlign: "center" }}>
-                <img src="/img/branding/logo-grande.svg" alt="Logo de Huerto Verde" style={logo} />
-                <p><strong>Huerto Verde</strong></p>
+            <div className="text-center mb-4">
+                <Image src="/img/branding/logo-grande.svg" alt="Logo de Huerto Verde" width="220" height="140" />
+                <p className="fw-bold mt-2">Huerto Verde</p>
             </div>
 
-            <section style={caja}>
-                <h1 style={tituloCaja}>Inicio de sesión</h1>
+            <Row className="justify-content-center">
+                <Col md={8} lg={6}>
+                    <Card className="shadow-sm">
+                        <Card.Header as="h1" className="fs-5 bg-success text-white">Inicio de sesión</Card.Header>
+                        <Card.Body>
+                            <Form noValidate onSubmit={enviar}>
+                                <Form.Group className="mb-3" controlId="correo">
+                                    <Form.Label>Correo</Form.Label>
+                                    <Form.Control type="email" maxLength={100} value={correo} onChange={e => setCorreo(e.target.value)} isInvalid={correo !== "" && errorCorreo !== ""} />
+                                    <Form.Text>Sólo dominios @duoc.cl, @profesor.duoc.cl y @gmail.com</Form.Text>
+                                    <Form.Control.Feedback type="invalid">{errorCorreo}</Form.Control.Feedback>
+                                </Form.Group>
 
-                <form onSubmit={enviar} style={{ padding: 16 }}>
-                    <div style={campo}>
-                        <label htmlFor="correo" style={label}>Correo</label>
-                        <input type="email" id="correo" maxLength={100} value={correo} onChange={e => setCorreo(e.target.value)} style={input} />
-                        <small style={ayuda}>Sólo dominios @duoc.cl, @profesor.duoc.cl y @gmail.com</small>
-                        {correo && errorCorreo && <p style={error}>{errorCorreo}</p>}
-                    </div>
+                                <Form.Group className="mb-3" controlId="contrasena">
+                                    <Form.Label>Contraseña</Form.Label>
+                                    <Form.Control type="password" maxLength={10} value={contrasena} onChange={e => setContrasena(e.target.value)} isInvalid={contrasena !== "" && errorContrasena !== ""} />
+                                    <Form.Text>Entre 4 y 10 caracteres</Form.Text>
+                                    <Form.Control.Feedback type="invalid">{errorContrasena}</Form.Control.Feedback>
+                                </Form.Group>
 
-                    <div style={campo}>
-                        <label htmlFor="contrasena" style={label}>Contraseña</label>
-                        <input type="password" id="contrasena" maxLength={10} value={contrasena} onChange={e => setContrasena(e.target.value)} style={input} />
-                        <small style={ayuda}>Entre 4 y 10 caracteres</small>
-                        {contrasena && errorContrasena && <p style={error}>{errorContrasena}</p>}
-                    </div>
+                                <Form.Check
+                                    type="checkbox"
+                                    id="recordar"
+                                    label="Recordar mi correo en este equipo"
+                                    checked={recordar}
+                                    onChange={e => setRecordar(e.target.checked)}
+                                    className="mb-3"
+                                />
 
-                    <div style={campo}>
-                        <label htmlFor="recordar" style={{ ...label, display: "inline" }}>
-                            <input type="checkbox" id="recordar" checked={recordar} onChange={e => setRecordar(e.target.checked)} />
-                            Recordar mi correo en este equipo
-                        </label>
-                    </div>
+                                <div className="d-grid">
+                                    <Button type="submit" variant="success" disabled={!valido}>Iniciar sesión</Button>
+                                </div>
 
-                    <p style={{ textAlign: "center" }}>
-                        <button
-                            type="submit"
-                            disabled={!valido}
-                            style={valido ? botonPrincipal : { ...botonPrincipal, opacity: 0.5, cursor: "not-allowed" }}
-                        >
-                            Iniciar sesión
-                        </button>
-                    </p>
+                                {mensaje && <Alert variant="success" className="mt-3 mb-0">{mensaje}</Alert>}
 
-                    {mensaje && <p style={exito}>{mensaje}</p>}
-
-                    <p style={{ textAlign: "center" }}>
-                        ¿No tienes cuenta? <a href="#" onClick={() => irA("registro")} style={{ color: "#355e3b" }}>Regístrate</a>
-                    </p>
-                </form>
-            </section>
+                                <p className="text-center mt-3 mb-0">
+                                    ¿No tienes cuenta? <a href="#" onClick={() => irA("registro")} className="link-success">Regístrate</a>
+                                </p>
+                            </Form>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
         </main>
     );
 }

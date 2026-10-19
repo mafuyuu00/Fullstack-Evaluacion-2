@@ -1,43 +1,31 @@
-const menu = {
-    display: "flex",
-    flex: "0 0 200px",
-    flexDirection: "column",
-    boxSizing: "border-box",
-    padding: "16px 0",
-    borderRight: "1px solid #cbbda9",
-    background: "#e8f0df"
-};
-
-const lista = { margin: 0, padding: 0, listStyle: "none" };
-const enlace = { display: "block", padding: "8px 16px", color: "#355e3b", fontSize: 13, textDecoration: "none" };
-const activo = { ...enlace, background: "#ead8c5", fontWeight: "bold" };
+import { Nav, Button } from "react-bootstrap";
 
 function MenuAdmin({ pagina, irA }) {
     return (
-        <nav style={menu}>
-            <a href="#" onClick={() => irA("admin")} style={{ display: "flex", alignItems: "center", gap: 8, padding: "0 16px 16px", color: "#355e3b", fontWeight: "bold", textDecoration: "none" }}>
+        <nav>
+            <a href="#" onClick={() => irA("admin")} className="d-flex align-items-center gap-2 mb-4 fw-bold link-success text-decoration-none">
                 <img src="/img/branding/logo.svg" alt="" width="30" height="30" />
-                <span>Huerto Verde</span>
+                Huerto Verde
             </a>
 
-            <ul style={lista}>
-                <li>
-                    <a href="#" onClick={() => irA("admin")} style={pagina === "admin" ? activo : enlace}>Dashboard</a>
-                </li>
-                <li>
-                    <a href="#" onClick={() => irA("admin-productos")} style={pagina.startsWith("admin-producto") ? activo : enlace}>Productos</a>
-                </li>
-                <li>
-                    <a href="#" onClick={() => irA("admin-usuarios")} style={pagina.startsWith("admin-usuario") ? activo : enlace}>Usuarios</a>
-                </li>
-            </ul>
-
-            <div style={{ marginTop: "auto", paddingTop: 12, borderTop: "1px solid #cbbda9" }}>
-                <ul style={lista}>
-                    <li><a href="#" onClick={() => irA("inicio")} style={enlace}>Ir a la tienda</a></li>
-                    <li><a href="#" onClick={() => irA("login")} style={enlace}>Cerrar sesión</a></li>
-                </ul>
+            <div className="d-grid gap-2">
+                <Button variant={pagina === "admin" ? "success" : "outline-success"} className="text-start" onClick={() => irA("admin")}>
+                    Dashboard
+                </Button>
+                <Button variant={pagina.startsWith("admin-producto") ? "success" : "outline-success"} className="text-start" onClick={() => irA("admin-productos")}>
+                    Productos
+                </Button>
+                <Button variant={pagina.startsWith("admin-usuario") ? "success" : "outline-success"} className="text-start" onClick={() => irA("admin-usuarios")}>
+                    Usuarios
+                </Button>
             </div>
+
+            <hr />
+
+            <Nav className="flex-column">
+                <Nav.Link href="#" onClick={() => irA("inicio")} className="link-success px-0">Ir a la tienda</Nav.Link>
+                <Nav.Link href="#" onClick={() => irA("login")} className="link-success px-0">Cerrar sesión</Nav.Link>
+            </Nav>
         </nav>
     );
 }

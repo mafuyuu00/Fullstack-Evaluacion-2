@@ -1,43 +1,5 @@
+import { Row, Col, Button, Breadcrumb, Image, Table } from "react-bootstrap";
 import { usuarios, tiposUsuario } from "../../data/usuarios";
-
-const encabezado = {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    gap: 16,
-    flexWrap: "wrap",
-    marginBottom: 20,
-    paddingBottom: 12,
-    borderBottom: "2px solid #6b8e4e"
-};
-const titulo = { margin: 0, color: "#355e3b", fontSize: 24 };
-const boton = {
-    display: "inline-block",
-    padding: "8px 16px",
-    border: "1px solid #8b5e3c",
-    background: "#ffffff",
-    color: "#8b5e3c",
-    textDecoration: "none"
-};
-const botonPrincipal = { ...boton, border: "1px solid #355e3b", background: "#355e3b", color: "#ffffff" };
-const migas = { display: "flex", gap: 6, margin: "0 0 16px", padding: 0, listStyle: "none", fontSize: 12 };
-const enlace = { color: "#355e3b" };
-const avatar = {
-    display: "block",
-    width: 120,
-    height: 120,
-    boxSizing: "border-box",
-    marginBottom: 16,
-    border: "1px solid #cbbda9",
-    background: "#ead8c5"
-};
-const ficha = { display: "grid", gridTemplateColumns: "180px 1fr", gap: "6px 16px", margin: 0 };
-const dt = { fontSize: 13, fontWeight: "bold" };
-const dd = { margin: 0 };
-const tabla = { width: "100%", borderCollapse: "collapse", fontSize: 14 };
-const tituloTabla = { paddingBottom: 8, fontWeight: "bold", textAlign: "left" };
-const celda = { padding: "7px 8px", border: "1px solid #cbbda9", textAlign: "left" };
-const encabezadoTabla = { ...celda, background: "#ead8c5", color: "#8b5e3c" };
 
 const descripcionTipo = {
     administrador: "acceso total al sistema",
@@ -72,77 +34,75 @@ function UsuarioVer({ run, irA }) {
 
     return (
         <>
-            <header style={encabezado}>
-                <h1 style={titulo}>{usuario.nombre} {usuario.apellidos}</h1>
-                <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                    <a href="#" onClick={() => irA("admin-usuario-editar", run)} style={botonPrincipal}>Editar</a>
-                    <a href="#" onClick={() => irA("admin-usuarios")} style={boton}>Volver al listado</a>
+            <div className="d-flex justify-content-between align-items-center flex-wrap gap-2 border-bottom border-success pb-2 mb-4">
+                <h1 className="h3 m-0 text-success">{usuario.nombre} {usuario.apellidos}</h1>
+                <div className="d-flex flex-wrap gap-2">
+                    <Button href="#" variant="success" onClick={() => irA("admin-usuario-editar", run)}>Editar</Button>
+                    <Button href="#" variant="outline-success" onClick={() => irA("admin-usuarios")}>Volver al listado</Button>
                 </div>
-            </header>
+            </div>
 
             <main>
-                <ul style={migas}>
-                    <li><a href="#" onClick={() => irA("admin")} style={enlace}>Dashboard</a></li>
-                    <li>&gt;</li>
-                    <li><a href="#" onClick={() => irA("admin-usuarios")} style={enlace}>Usuarios</a></li>
-                    <li>&gt;</li>
-                    <li>{usuario.run}</li>
-                </ul>
+                <Breadcrumb>
+                    <Breadcrumb.Item href="#" linkProps={{ className: "link-success" }} onClick={() => irA("admin")}>Dashboard</Breadcrumb.Item>
+                    <Breadcrumb.Item href="#" linkProps={{ className: "link-success" }} onClick={() => irA("admin-usuarios")}>Usuarios</Breadcrumb.Item>
+                    <Breadcrumb.Item active>{usuario.run}</Breadcrumb.Item>
+                </Breadcrumb>
 
-                <section>
-                    <h2>Ficha del usuario</h2>
-                    <img src="/img/branding/logo.svg" alt="Avatar del usuario" style={avatar} />
-                    <dl style={ficha}>
-                        <dt style={dt}>Run</dt>
-                        <dd style={dd}>{usuario.run}</dd>
-                        <dt style={dt}>Nombre</dt>
-                        <dd style={dd}>{usuario.nombre}</dd>
-                        <dt style={dt}>Apellidos</dt>
-                        <dd style={dd}>{usuario.apellidos}</dd>
-                        <dt style={dt}>Correo</dt>
-                        <dd style={dd}><a href={"mailto:" + usuario.correo} style={enlace}>{usuario.correo}</a></dd>
-                        <dt style={dt}>Fecha de nacimiento</dt>
-                        <dd style={dd}>{fechaNacimiento}</dd>
-                        <dt style={dt}>Tipo de usuario</dt>
-                        <dd style={dd}>{tiposUsuario[usuario.tipo]} ({descripcionTipo[usuario.tipo]})</dd>
-                        <dt style={dt}>Región</dt>
-                        <dd style={dd}>{usuario.region}</dd>
-                        <dt style={dt}>Comuna</dt>
-                        <dd style={dd}>{usuario.comuna}</dd>
-                        <dt style={dt}>Dirección</dt>
-                        <dd style={dd}>{usuario.direccion}</dd>
-                        <dt style={dt}>Fecha de registro</dt>
-                        <dd style={dd}>{usuario.fechaRegistro}</dd>
-                        <dt style={dt}>Último acceso</dt>
-                        <dd style={dd}>{usuario.ultimoAcceso}</dd>
-                    </dl>
+                <section className="mb-4">
+                    <h2 className="h5">Ficha del usuario</h2>
+                    <Image src="/img/branding/logo.svg" alt="Avatar del usuario" width="120" height="120" rounded thumbnail className="mb-3" />
+                    <Row as="dl">
+                        <Col as="dt" sm={4} lg={3}>Run</Col>
+                        <Col as="dd" sm={8} lg={9}>{usuario.run}</Col>
+                        <Col as="dt" sm={4} lg={3}>Nombre</Col>
+                        <Col as="dd" sm={8} lg={9}>{usuario.nombre}</Col>
+                        <Col as="dt" sm={4} lg={3}>Apellidos</Col>
+                        <Col as="dd" sm={8} lg={9}>{usuario.apellidos}</Col>
+                        <Col as="dt" sm={4} lg={3}>Correo</Col>
+                        <Col as="dd" sm={8} lg={9}><a href={"mailto:" + usuario.correo} className="link-success">{usuario.correo}</a></Col>
+                        <Col as="dt" sm={4} lg={3}>Fecha de nacimiento</Col>
+                        <Col as="dd" sm={8} lg={9}>{fechaNacimiento}</Col>
+                        <Col as="dt" sm={4} lg={3}>Tipo de usuario</Col>
+                        <Col as="dd" sm={8} lg={9}>{tiposUsuario[usuario.tipo]} ({descripcionTipo[usuario.tipo]})</Col>
+                        <Col as="dt" sm={4} lg={3}>Región</Col>
+                        <Col as="dd" sm={8} lg={9}>{usuario.region}</Col>
+                        <Col as="dt" sm={4} lg={3}>Comuna</Col>
+                        <Col as="dd" sm={8} lg={9}>{usuario.comuna}</Col>
+                        <Col as="dt" sm={4} lg={3}>Dirección</Col>
+                        <Col as="dd" sm={8} lg={9}>{usuario.direccion}</Col>
+                        <Col as="dt" sm={4} lg={3}>Fecha de registro</Col>
+                        <Col as="dd" sm={8} lg={9}>{usuario.fechaRegistro}</Col>
+                        <Col as="dt" sm={4} lg={3}>Último acceso</Col>
+                        <Col as="dd" sm={8} lg={9}>{usuario.ultimoAcceso}</Col>
+                    </Row>
                 </section>
 
                 <section>
-                    <h2>Permisos del perfil</h2>
-                    <table style={tabla}>
-                        <caption style={tituloTabla}>Accesos asociados al perfil {tiposUsuario[usuario.tipo]}</caption>
+                    <h2 className="h5">Permisos del perfil</h2>
+                    <Table striped bordered hover responsive size="sm" className="caption-top">
+                        <caption>Accesos asociados al perfil {tiposUsuario[usuario.tipo]}</caption>
                         <thead>
                             <tr>
-                                <th style={encabezadoTabla}>Módulo</th>
-                                <th style={encabezadoTabla}>Ver</th>
-                                <th style={encabezadoTabla}>Crear</th>
-                                <th style={encabezadoTabla}>Editar</th>
-                                <th style={encabezadoTabla}>Eliminar</th>
+                                <th>Módulo</th>
+                                <th>Ver</th>
+                                <th>Crear</th>
+                                <th>Editar</th>
+                                <th>Eliminar</th>
                             </tr>
                         </thead>
                         <tbody>
                             {permisos[usuario.tipo].map(fila => (
                                 <tr key={fila[0]}>
-                                    <th style={celda}>{fila[0]}</th>
-                                    <td style={celda}>{fila[1]}</td>
-                                    <td style={celda}>{fila[2]}</td>
-                                    <td style={celda}>{fila[3]}</td>
-                                    <td style={celda}>{fila[4]}</td>
+                                    <th>{fila[0]}</th>
+                                    <td>{fila[1]}</td>
+                                    <td>{fila[2]}</td>
+                                    <td>{fila[3]}</td>
+                                    <td>{fila[4]}</td>
                                 </tr>
                             ))}
                         </tbody>
-                    </table>
+                    </Table>
                 </section>
             </main>
         </>

@@ -1,31 +1,19 @@
-const migas = { display: "flex", gap: 6, margin: "0 0 16px", padding: 0, listStyle: "none", fontSize: 12 };
-const enlace = { color: "#355e3b" };
-const imagen = {
-    display: "block",
-    width: "100%",
-    height: 320,
-    boxSizing: "border-box",
-    objectFit: "cover",
-    border: "1px solid #cbbda9",
-    background: "#ead8c5"
-};
+import { Breadcrumb, Image } from "react-bootstrap";
 
 function Blog1({ irA }) {
     return (
         <main>
-            <ul style={migas}>
-                <li><a href="#" onClick={() => irA("inicio")} style={enlace}>Home</a></li>
-                <li>&gt;</li>
-                <li><a href="#" onClick={() => irA("blogs")} style={enlace}>Blogs</a></li>
-                <li>&gt;</li>
-                <li>Caso curioso #1</li>
-            </ul>
+            <Breadcrumb>
+                <Breadcrumb.Item href="#" linkProps={{ className: "link-success" }} onClick={() => irA("inicio")}>Home</Breadcrumb.Item>
+                <Breadcrumb.Item href="#" linkProps={{ className: "link-success" }} onClick={() => irA("blogs")}>Blogs</Breadcrumb.Item>
+                <Breadcrumb.Item active>Caso curioso #1</Breadcrumb.Item>
+            </Breadcrumb>
 
             <article>
                 <h1>Caso curioso #1: la manzana que flota</h1>
-                <p><small>Publicado el 12 de agosto de 2026 · Categoría: Datos curiosos · 4 minutos de lectura</small></p>
+                <p className="text-muted"><small>Publicado el 12 de agosto de 2026 · Categoría: Datos curiosos · 4 minutos de lectura</small></p>
 
-                <img src="/img/productos/manzana-fuji.jpg" alt="Manzanas frescas" style={imagen} />
+                <Image src="/img/productos/manzana-fuji.jpg" alt="Manzanas frescas" rounded height="320" className="w-100 object-fit-cover mb-4" />
 
                 <p>
                     Si alguna vez pusiste una manzana en un balde con agua, habrás notado que
@@ -66,12 +54,12 @@ function Blog1({ irA }) {
                 </ol>
 
                 <p>
-                    ¿Quieres probarlo en casa? Nuestras <a href="#" onClick={() => irA("detalle", "FR-001")} style={enlace}>manzanas Fuji</a> llegan
+                    ¿Quieres probarlo en casa? Nuestras <a href="#" onClick={() => irA("detalle", "FR-001")} className="link-success">manzanas Fuji</a> llegan
                     directo desde San Clemente, cosechadas la semana anterior al despacho.
                 </p>
 
                 <p>
-                    <a href="#" onClick={() => irA("blogs")} style={enlace}>Volver a los blogs</a> · <a href="#" onClick={() => irA("blog2")} style={enlace}>Leer el caso curioso #2</a>
+                    <a href="#" onClick={() => irA("blogs")} className="link-success">Volver a los blogs</a> · <a href="#" onClick={() => irA("blog2")} className="link-success">Leer el caso curioso #2</a>
                 </p>
             </article>
         </main>

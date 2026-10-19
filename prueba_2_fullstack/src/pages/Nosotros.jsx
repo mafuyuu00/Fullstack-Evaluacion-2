@@ -1,34 +1,24 @@
-const sidebar = {
-    flex: "0 0 220px",
-    boxSizing: "border-box",
-    padding: 12,
-    border: "1px solid #cbbda9",
-    background: "#e8f0df"
-};
-
-const enlace = { color: "#355e3b" };
-const tabla = { width: "100%", borderCollapse: "collapse", fontSize: 14 };
-const titulo = { paddingBottom: 8, fontWeight: "bold", textAlign: "left" };
-const celda = { padding: "7px 8px", border: "1px solid #cbbda9", textAlign: "left" };
-const encabezado = { ...celda, background: "#ead8c5", color: "#8b5e3c" };
+import { Row, Col, Card, Nav, Table } from "react-bootstrap";
 
 function Nosotros() {
     return (
-        <div style={{ display: "flex", gap: 24, alignItems: "flex-start", flexWrap: "wrap" }}>
-            <aside style={sidebar}>
-                <h2 style={{ fontSize: 14, color: "#355e3b" }}>En esta página</h2>
-                <ul style={{ margin: 0, padding: 0, listStyle: "none" }}>
-                    <li><a href="#quienes-somos" style={enlace}>Quiénes somos</a></li>
-                    <li><a href="#mision" style={enlace}>Misión y visión</a></li>
-                    <li><a href="#valores" style={enlace}>Nuestros valores</a></li>
-                    <li><a href="#tecnologias" style={enlace}>Tecnologías del proyecto</a></li>
-                </ul>
-            </aside>
+        <Row className="g-4">
+            <Col as="aside" md={3}>
+                <Card body>
+                    <h2 className="fs-6 text-success">En esta página</h2>
+                    <Nav className="flex-column">
+                        <Nav.Link href="#quienes-somos" className="link-success px-0">Quiénes somos</Nav.Link>
+                        <Nav.Link href="#mision" className="link-success px-0">Misión y visión</Nav.Link>
+                        <Nav.Link href="#valores" className="link-success px-0">Nuestros valores</Nav.Link>
+                        <Nav.Link href="#tecnologias" className="link-success px-0">Tecnologías del proyecto</Nav.Link>
+                    </Nav>
+                </Card>
+            </Col>
 
-            <main style={{ flex: "1 1 520px" }}>
-                <h1>Nosotros</h1>
+            <Col as="main" md={9}>
+                <h1 className="mb-4">Nosotros</h1>
 
-                <section id="quienes-somos">
+                <section id="quienes-somos" className="mb-4">
                     <h2>Quiénes somos</h2>
                     <p>
                         Huerto Verde nació en 2026 como un proyecto de tres estudiantes de
@@ -44,22 +34,32 @@ function Nosotros() {
                     </p>
                 </section>
 
-                <section id="mision">
+                <section id="mision" className="mb-4">
                     <h2>Misión y visión</h2>
-                    <h3>Misión</h3>
-                    <p>
-                        Acercar productos frescos de origen conocido a los hogares urbanos,
-                        con trazabilidad clara y precios que reconozcan el trabajo del
-                        productor.
-                    </p>
-                    <h3>Visión</h3>
-                    <p>
-                        Ser la tienda online de referencia en Chile para la compra de frutas
-                        y verduras de temporada al año 2030.
-                    </p>
+                    <Row className="g-3">
+                        <Col md={6}>
+                            <Card body className="h-100 border-success">
+                                <h3 className="fs-5 text-success">Misión</h3>
+                                <p className="mb-0">
+                                    Acercar productos frescos de origen conocido a los hogares urbanos,
+                                    con trazabilidad clara y precios que reconozcan el trabajo del
+                                    productor.
+                                </p>
+                            </Card>
+                        </Col>
+                        <Col md={6}>
+                            <Card body className="h-100 border-success">
+                                <h3 className="fs-5 text-success">Visión</h3>
+                                <p className="mb-0">
+                                    Ser la tienda online de referencia en Chile para la compra de frutas
+                                    y verduras de temporada al año 2030.
+                                </p>
+                            </Card>
+                        </Col>
+                    </Row>
                 </section>
 
-                <section id="valores">
+                <section id="valores" className="mb-4">
                     <h2>Nuestros valores</h2>
                     <ul>
                         <li><strong>Frescura:</strong> lo que se cosecha hoy se despacha mañana.</li>
@@ -71,46 +71,46 @@ function Nosotros() {
 
                 <section id="tecnologias">
                     <h2>Tecnologías del proyecto</h2>
-                    <table style={tabla}>
-                        <caption style={titulo}>Herramientas usadas en el proyecto</caption>
-                        <thead>
+                    <Table striped bordered hover responsive className="caption-top">
+                        <caption>Herramientas usadas en el proyecto</caption>
+                        <thead className="table-success">
                             <tr>
-                                <th style={encabezado}>Área</th>
-                                <th style={encabezado}>Herramienta</th>
-                                <th style={encabezado}>Uso en el proyecto</th>
+                                <th>Área</th>
+                                <th>Herramienta</th>
+                                <th>Uso en el proyecto</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td style={celda}>Estructura</td>
-                                <td style={celda}>React + Vite</td>
-                                <td style={celda}>Componentes JSX para las vistas de la tienda y del administrador.</td>
+                                <td>Estructura</td>
+                                <td>React + Vite</td>
+                                <td>Componentes JSX para las vistas de la tienda y del administrador.</td>
                             </tr>
                             <tr>
-                                <td style={celda}>Estilos</td>
-                                <td style={celda}>Estilos en línea</td>
-                                <td style={celda}>Objetos de estilo dentro de cada componente, sin hojas CSS.</td>
+                                <td>Estilos</td>
+                                <td>Bootstrap + React-Bootstrap</td>
+                                <td>Componentes de React-Bootstrap y clases de Bootstrap, sin hojas CSS propias.</td>
                             </tr>
                             <tr>
-                                <td style={celda}>Interacción</td>
-                                <td style={celda}>JavaScript (ES6)</td>
-                                <td style={celda}>Validación de formularios, listado de productos y carrito.</td>
+                                <td>Interacción</td>
+                                <td>JavaScript (ES6)</td>
+                                <td>Validación de formularios, listado de productos y carrito.</td>
                             </tr>
                             <tr>
-                                <td style={celda}>Persistencia</td>
-                                <td style={celda}>localStorage</td>
-                                <td style={celda}>Guarda el contenido del carrito de compras entre sesiones.</td>
+                                <td>Persistencia</td>
+                                <td>localStorage</td>
+                                <td>Guarda el contenido del carrito de compras entre sesiones.</td>
                             </tr>
                             <tr>
-                                <td style={celda}>Control de versiones</td>
-                                <td style={celda}>Git + GitHub</td>
-                                <td style={celda}>Repositorio público con commits por integrante.</td>
+                                <td>Control de versiones</td>
+                                <td>Git + GitHub</td>
+                                <td>Repositorio público con commits por integrante.</td>
                             </tr>
                         </tbody>
-                    </table>
+                    </Table>
                 </section>
-            </main>
-        </div>
+            </Col>
+        </Row>
     );
 }
 
