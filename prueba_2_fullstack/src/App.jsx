@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Container, Row, Col, Alert } from "react-bootstrap";
 import { productos } from "./data/productos";
 
 import Header from "./components/Header";
@@ -91,35 +92,43 @@ function App() {
 
     if (pagina.startsWith("admin")) {
         return (
-            <div style={{ display: "flex", minHeight: "100vh" }}>
-                <MenuAdmin pagina={pagina} irA={irA} />
+            <Container fluid>
+                <Row>
+                    <Col md={3} lg={2} className="bg-body-tertiary border-end p-3">
+                        <MenuAdmin pagina={pagina} irA={irA} />
+                    </Col>
 
-                <div style={{ flex: "1 1 auto", padding: "20px 24px" }}>
-                    {pagina === "admin" && <Dashboard irA={irA} />}
-                    {pagina === "admin-productos" && <AdminProductos irA={irA} />}
-                    {pagina === "admin-producto-nuevo" && <ProductoNuevo irA={irA} />}
-                    {pagina === "admin-producto-ver" && <ProductoVer codigo={seleccionado} irA={irA} />}
-                    {pagina === "admin-producto-editar" && <ProductoEditar codigo={seleccionado} irA={irA} />}
-                    {pagina === "admin-usuarios" && <AdminUsuarios irA={irA} />}
-                    {pagina === "admin-usuario-nuevo" && <UsuarioNuevo irA={irA} />}
-                    {pagina === "admin-usuario-ver" && <UsuarioVer run={seleccionado} irA={irA} />}
-                    {pagina === "admin-usuario-editar" && <UsuarioEditar run={seleccionado} irA={irA} />}
+                    <Col md={9} lg={10} className="p-4 min-vh-100">
+                        {pagina === "admin" && <Dashboard irA={irA} />}
+                        {pagina === "admin-productos" && <AdminProductos irA={irA} />}
+                        {pagina === "admin-producto-nuevo" && <ProductoNuevo irA={irA} />}
+                        {pagina === "admin-producto-ver" && <ProductoVer codigo={seleccionado} irA={irA} />}
+                        {pagina === "admin-producto-editar" && <ProductoEditar codigo={seleccionado} irA={irA} />}
+                        {pagina === "admin-usuarios" && <AdminUsuarios irA={irA} />}
+                        {pagina === "admin-usuario-nuevo" && <UsuarioNuevo irA={irA} />}
+                        {pagina === "admin-usuario-ver" && <UsuarioVer run={seleccionado} irA={irA} />}
+                        {pagina === "admin-usuario-editar" && <UsuarioEditar run={seleccionado} irA={irA} />}
 
-                    <footer>
-                        <p><small>Panel de administración · Huerto Verde · Entrega 1 DSY1104</small></p>
-                    </footer>
-                </div>
-            </div>
+                        <footer className="mt-5 pt-3 border-top text-muted">
+                            <small>Panel de administración · Huerto Verde · Entrega 1 DSY1104</small>
+                        </footer>
+                    </Col>
+                </Row>
+            </Container>
         );
     }
 
     return (
         <>
-            {mensaje && <p style={{ margin: "4px 0 0", color: "#a94442", fontSize: 12 }}>{mensaje}</p>}
-
             <Header pagina={pagina} irA={irA} cantidad={cantidadTotal} />
 
-            <div style={{ maxWidth: 1100, margin: "0 auto", padding: 20, boxSizing: "border-box" }}>
+            <Container className="py-4">
+                {mensaje && (
+                    <Alert variant="info" dismissible onClose={() => setMensaje("")}>
+                        {mensaje}
+                    </Alert>
+                )}
+
                 {pagina === "inicio" && <Inicio irA={irA} />}
                 {pagina === "productos" && <Productos categoria={seleccionado} irA={irA} agregarAlCarrito={agregarAlCarrito} />}
                 {pagina === "detalle" && <DetalleProducto key={seleccionado} codigo={seleccionado} irA={irA} agregarAlCarrito={agregarAlCarrito} />}
@@ -138,7 +147,7 @@ function App() {
                         eliminarDelCarrito={eliminarDelCarrito}
                     />
                 )}
-            </div>
+            </Container>
 
             <Footer irA={irA} />
         </>

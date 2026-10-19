@@ -1,48 +1,5 @@
+import { Row, Col, Card, ListGroup, Image, Button, Form, InputGroup } from "react-bootstrap";
 import { productos, formatoPesos } from "../data/productos";
-
-const linea = {
-    display: "flex",
-    gap: 16,
-    alignItems: "center",
-    padding: "12px 0",
-    borderBottom: "1px solid #cbbda9"
-};
-const miniatura = {
-    display: "block",
-    width: "100%",
-    height: 56,
-    boxSizing: "border-box",
-    objectFit: "cover",
-    border: "1px solid #cbbda9",
-    background: "#ead8c5"
-};
-const resumen = {
-    flex: "0 0 280px",
-    boxSizing: "border-box",
-    padding: 16,
-    border: "1px solid #cbbda9",
-    background: "#e8f0df"
-};
-const enlace = { color: "#355e3b" };
-const boton = {
-    padding: "8px 16px",
-    border: "1px solid #8b5e3c",
-    background: "#ffffff",
-    color: "#8b5e3c",
-    font: "inherit",
-    cursor: "pointer"
-};
-const botonPagar = {
-    display: "block",
-    padding: "8px 16px",
-    border: "1px solid #355e3b",
-    background: "#355e3b",
-    color: "#ffffff",
-    textAlign: "center",
-    textDecoration: "none"
-};
-const label = { display: "block", marginBottom: 4, fontSize: 12, textTransform: "uppercase" };
-const input = { width: "100%", boxSizing: "border-box", padding: 7, border: "1px solid #cbbda9", background: "#fffaf2", font: "inherit" };
 
 function Carrito({ carrito, irA, cambiarCantidad, eliminarDelCarrito }) {
     let subtotal = 0;
@@ -54,82 +11,93 @@ function Carrito({ carrito, irA, cambiarCantidad, eliminarDelCarrito }) {
 
     return (
         <main>
-            <h1>Mi carrito de compras</h1>
+            <h1 className="mb-4">Mi carrito de compras</h1>
 
-            <div style={{ display: "flex", gap: 24, alignItems: "flex-start", flexWrap: "wrap" }}>
-                <section style={{ flex: "1 1 520px" }}>
-                    {carrito.map(item => {
-                        const producto = productos.find(p => p.codigo === item.codigo);
+            <Row className="g-4">
+                <Col as="section" lg={8}>
+                    <ListGroup className="mb-3">
+                        {carrito.map(item => {
+                            const producto = productos.find(p => p.codigo === item.codigo);
 
-                        return (
-                            <article key={item.codigo} style={linea}>
-                                <div style={{ flex: "0 0 110px" }}>
-                                    <img src={producto.imagen} alt={producto.alt} style={miniatura} />
-                                </div>
+                            return (
+                                <ListGroup.Item key={item.codigo} as="article" className="py-3">
+                                    <Row className="align-items-center g-3">
+                                        <Col xs={3} md={2}>
+                                            <Image src={producto.imagen} alt={producto.alt} rounded height="56" className="w-100 object-fit-cover" />
+                                        </Col>
 
-                                <div style={{ flex: "1 1 auto" }}>
-                                    <h3>
-                                        <a href="#" onClick={() => irA("detalle", producto.codigo)} style={enlace}>{producto.nombre}</a>
-                                    </h3>
-                                    <p>{producto.unidad} · {producto.categoriaNombre} · Código {producto.codigo}</p>
-                                </div>
+                                        <Col xs={9} md={4}>
+                                            <h3 className="fs-6 mb-1">
+                                                <a href="#" onClick={() => irA("detalle", producto.codigo)} className="link-success">{producto.nombre}</a>
+                                            </h3>
+                                            <small className="text-muted">{producto.unidad} · {producto.categoriaNombre} · Código {producto.codigo}</small>
+                                        </Col>
 
-                                <p>{formatoPesos(producto.precio)}</p>
+                                        <Col xs={4} md={2} className="fw-bold">{formatoPesos(producto.precio)}</Col>
 
-                                <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
-                                    <button type="button" onClick={() => cambiarCantidad(item.codigo, item.cantidad - 1)} style={boton}>−</button>
-                                    <input
-                                        type="number"
-                                        value={item.cantidad}
-                                        min="1"
-                                        max={producto.stock}
-                                        onChange={e => {
-                                            const nuevaCantidad = Number(e.target.value);
-                                            if (nuevaCantidad >= 1) cambiarCantidad(item.codigo, nuevaCantidad);
-                                        }}
-                                        style={{ width: 48, boxSizing: "border-box", padding: 4, border: "1px solid #cbbda9", textAlign: "center" }}
-                                    />
-                                    <button type="button" onClick={() => cambiarCantidad(item.codigo, item.cantidad + 1)} style={boton}>+</button>
-                                </div>
+                                        <Col xs={5} md={2}>
+                                            <InputGroup size="sm">
+                                                <Button variant="outline-secondary" onClick={() => cambiarCantidad(item.codigo, item.cantidad - 1)}>−</Button>
+                                                <Form.Control
+                                                    type="number"
+                                                    value={item.cantidad}
+                                                    min="1"
+                                                    max={producto.stock}
+                                                    className="text-center"
+                                                    onChange={e => {
+                                                        const nuevaCantidad = Number(e.target.value);
+                                                        if (nuevaCantidad >= 1) cambiarCantidad(item.codigo, nuevaCantidad);
+                                                    }}
+                                                />
+                                                <Button variant="outline-secondary" onClick={() => cambiarCantidad(item.codigo, item.cantidad + 1)}>+</Button>
+                                            </InputGroup>
+                                        </Col>
 
-                                <button type="button" onClick={() => eliminarDelCarrito(item.codigo)} style={boton}>Eliminar</button>
-                            </article>
-                        );
-                    })}
+                                        <Col xs={3} md={2} className="text-end">
+                                            <Button variant="outline-danger" size="sm" onClick={() => eliminarDelCarrito(item.codigo)}>Eliminar</Button>
+                                        </Col>
+                                    </Row>
+                                </ListGroup.Item>
+                            );
+                        })}
+                    </ListGroup>
 
-                    <p><a href="#" onClick={() => irA("productos")} style={enlace}>Seguir comprando</a></p>
-                </section>
+                    <a href="#" onClick={() => irA("productos")} className="link-success">Seguir comprando</a>
+                </Col>
 
-                <aside style={resumen}>
-                    <h2>Resumen</h2>
-                    <dl>
-                        <dt>Subtotal</dt>
-                        <dd>{formatoPesos(subtotal)}</dd>
-                        <dt>Despacho</dt>
-                        <dd>{formatoPesos(despacho)}</dd>
-                        <dt>Descuento</dt>
-                        <dd>$0</dd>
-                        <dt><strong>TOTAL</strong></dt>
-                        <dd><strong>{formatoPesos(subtotal + despacho)}</strong></dd>
-                    </dl>
+                <Col as="aside" lg={4}>
+                    <Card>
+                        <Card.Body>
+                            <Card.Title as="h2" className="fs-5 mb-3">Resumen</Card.Title>
+                            <Row as="dl">
+                                <Col as="dt" xs={6}>Subtotal</Col>
+                                <Col as="dd" xs={6} className="text-end">{formatoPesos(subtotal)}</Col>
+                                <Col as="dt" xs={6}>Despacho</Col>
+                                <Col as="dd" xs={6} className="text-end">{formatoPesos(despacho)}</Col>
+                                <Col as="dt" xs={6}>Descuento</Col>
+                                <Col as="dd" xs={6} className="text-end">$0</Col>
+                                <Col as="dt" xs={6} className="border-top pt-2">TOTAL</Col>
+                                <Col as="dd" xs={6} className="border-top pt-2 text-end fw-bold">{formatoPesos(subtotal + despacho)}</Col>
+                            </Row>
 
-                    <form onSubmit={e => e.preventDefault()}>
-                        <div style={{ marginBottom: 14 }}>
-                            <label htmlFor="cupon" style={label}>Ingrese el cupón de descuento</label>
-                            <input type="text" id="cupon" maxLength={20} style={input} />
-                        </div>
-                        <button type="submit" style={boton}>Aplicar</button>
-                    </form>
+                            <Form onSubmit={e => e.preventDefault()} className="mb-3">
+                                <Form.Label htmlFor="cupon" className="small">Ingrese el cupón de descuento</Form.Label>
+                                <InputGroup>
+                                    <Form.Control type="text" id="cupon" maxLength={20} />
+                                    <Button type="submit" variant="outline-success">Aplicar</Button>
+                                </InputGroup>
+                            </Form>
 
-                    <p><a href="#" style={botonPagar}>Pagar</a></p>
-                    <p>
-                        <small>
-                            El carrito se guarda en <code>localStorage</code>, por lo que se
-                            conserva si cierras la pestaña.
-                        </small>
-                    </p>
-                </aside>
-            </div>
+                            <Button href="#" variant="success" className="w-100">Pagar</Button>
+
+                            <p className="mt-3 mb-0 small text-muted">
+                                El carrito se guarda en <code>localStorage</code>, por lo que se
+                                conserva si cierras la pestaña.
+                            </p>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
         </main>
     );
 }
