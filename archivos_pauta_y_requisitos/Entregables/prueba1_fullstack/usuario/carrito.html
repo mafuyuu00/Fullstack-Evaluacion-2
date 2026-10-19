@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi carrito de compras | Huerto Verde</title>
+  <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <a class="brand" href="index.html">
+      <!-- IMAGEN: logo de la tienda, 40x40 px -->
+      <span class="logo-box" aria-hidden="true"></span>
+      <span>Huerto Verde</span>
+    </a>
+    <nav aria-label="Navegación principal">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="productos.html">Productos</a></li>
+        <li><a href="nosotros.html">Nosotros</a></li>
+        <li><a href="blogs.html">Blogs</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+      </ul>
+    </nav>
+    <a class="cart-link" href="carrito.html" aria-current="page">
+      <!-- IMAGEN: icono de carrito, 24x24 px -->
+      <span class="icono-carrito" aria-hidden="true"></span>
+      Carrito (<span id="contador-carrito" data-cart-count>0</span>)
+    </a>
+  </header>
+
+  <main class="contenedor">
+    <h1>Mi carrito de compras</h1>
+
+    <!-- Dejé este carrito preparado para guardar productos y recalcular los totales. -->
+    <div class="layout-carrito">
+
+      <section class="lineas" aria-labelledby="titulo-lineas">
+        <h2 id="titulo-lineas" class="oculto-visual">Productos en el carrito</h2>
+
+        <p><a href="productos.html">Seguir comprando</a></p>
+      </section>
+
+      <!-- Dejé este resumen preparado para mostrar los totales calculados de la compra. -->
+      <aside class="resumen" aria-labelledby="titulo-resumen">
+        <h2 id="titulo-resumen">Resumen</h2>
+
+        <dl>
+          <dt>Subtotal</dt>
+          <dd id="subtotal-carrito" data-resumen="subtotal">$16.560</dd>
+          <dt>Despacho</dt>
+          <dd id="despacho-carrito" data-resumen="despacho">$2.990</dd>
+          <dt>Descuento</dt>
+          <dd data-resumen="descuento">$0</dd>
+          <dt><strong>TOTAL</strong></dt>
+          <dd><strong id="total-carrito" data-resumen="total">$19.550</strong></dd>
+        </dl>
+
+        <!-- JS: validar el cupón contra la lista de cupones vigentes y
+             mostrar un mensaje de éxito o de error personalizado -->
+        <form action="#" method="post" novalidate>
+          <div class="campo">
+            <label for="cupon">Ingrese el cupón de descuento</label>
+            <input type="text" id="cupon" name="cupon" maxlength="20" autocomplete="off"
+                   aria-describedby="error-cupon">
+            <p class="error" id="error-cupon" role="alert" hidden></p>
+          </div>
+          <button type="submit">Aplicar</button>
+        </form>
+
+        <p><a class="btn btn-pagar" href="#">Pagar</a></p>
+        <p><small>El carrito se guarda en <code>localStorage</code>, por lo que se
+        conserva si cierras la pestaña.</small></p>
+      </aside>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div>
+      <p><strong>Huerto Verde</strong></p>
+      <!-- IMAGEN: logos de medios de pago, 48x30 px cada uno -->
+      <ul class="medios-pago" aria-label="Medios de pago aceptados">
+        <li>VISA</li>
+        <li>MASTERCARD</li>
+        <li>REDCOMPRA</li>
+      </ul>
+    </div>
+    <nav aria-label="Categorías">
+      <h2>Categorías</h2>
+      <ul>
+        <li><a href="productos.html?categoria=frutas">Frutas</a></li>
+        <li><a href="productos.html?categoria=verduras">Verduras</a></li>
+        <li><a href="productos.html?categoria=organicos">Orgánicos</a></li>
+      </ul>
+    </nav>
+    <div>
+      <h2>Mantente en contacto</h2>
+      <form class="newsletter" action="#" method="post" novalidate>
+        <label class="oculto-visual" for="newsletter-correo">Correo electrónico</label>
+        <input type="email" id="newsletter-correo" name="correo" placeholder="Ingresa tu correo"
+               maxlength="100" autocomplete="email" required>
+        <button type="submit">Suscribirse</button>
+      </form>
+      <p><small>&copy; 2026 Huerto Verde · Entrega 1 DSY1104</small></p>
+    </div>
+  </footer>
+
+  <!-- Carrito basado en el catálogo compartido y localStorage -->
+  <script src="../js/productos.js"></script>
+  <script src="../js/carrito.js"></script>
+</body>
+</html>
