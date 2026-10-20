@@ -4,11 +4,13 @@ import { comunasPorRegion } from "../data/regiones";
 
 const soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü]+(\s+[A-Za-zÁÉÍÓÚáéíóúÑñÜü]+)*$/;
 
+//valida correo simplemente
 function correoValido(correo) {
     const partes = correo.trim().toLowerCase().split("@");
     return partes.length === 2 && partes[0] !== "" && ["duoc.cl", "profesor.duoc.cl", "gmail.com"].includes(partes[1]);
 }
 
+//esta valida edad nomás
 function calcularEdad(fecha) {
     const nacimiento = new Date(fecha + "T00:00:00");
     const hoy = new Date();
@@ -21,6 +23,10 @@ function calcularEdad(fecha) {
     return edad;
 }
 
+
+//Acá pasamos la función irA como prop desde el app.jsx, es distinto a un import pero funciona parecido,
+//después cambiamos los estados de los componentes del formulario para verificar errores, ya que todos parten vacíos, por lo que si
+//se quedan así arrojará error y renderiza la página
 function Registro({ irA }) {
     const [run, setRun] = useState("");
     const [nombre, setNombre] = useState("");
@@ -35,6 +41,7 @@ function Registro({ irA }) {
     const [direccion, setDireccion] = useState("");
     const [mensaje, setMensaje] = useState("");
 
+    //acá lo que mencionamos antes del error si queda vacío
     let errorRun = "";
     if (!/^[0-9]+[0-9Kk]?$/.test(run)) errorRun = "El RUN debe ingresarse sin puntos ni guion.";
     else if (run.length < 7 || run.length > 9) errorRun = "El RUN debe tener entre 7 y 9 caracteres.";
@@ -169,6 +176,8 @@ function Registro({ irA }) {
 
                                 {mensaje && <Alert variant="success" className="mt-3 mb-0">{mensaje}</Alert>}
 
+                                //Esta es la parte importante, porque ejecuta la función ira que pasamos como prop del archivo app.jsx
+                                //Por lo que va a inicia sesión ("login") cuando se clickea el botón
                                 <p className="text-center mt-3 mb-0">
                                     ¿Ya tienes cuenta? <a href="#" onClick={() => irA("login")} className="link-success">Inicia sesión</a>
                                 </p>
