@@ -2,10 +2,13 @@ import { useState } from "react";
 import { Container, Row, Col, Alert } from "react-bootstrap";
 import { productos } from "./data/productos";
 
+//acá importamos componentes ya hechos
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import MenuAdmin from "./components/MenuAdmin";
 
+
+//Estas son la direcciones de las páginas de inicio y abajo las de admin
 import Inicio from "./pages/Inicio";
 import Productos from "./pages/Productos";
 import DetalleProducto from "./pages/DetalleProducto";
@@ -28,12 +31,17 @@ import UsuarioNuevo from "./pages/admin/UsuarioNuevo";
 import UsuarioVer from "./pages/admin/UsuarioVer";
 import UsuarioEditar from "./pages/admin/UsuarioEditar";
 
+
+    //Nosotros decidimos hacerlo así, aunque se puede hacer con rutas directas con react-router y un navigate en el botón
+    //Así el app.jsx quedaría más limpio y solo manejaría las rutas, pero como en clases lo hemos hecho así lo mantuvimos
 function App() {
     const [pagina, setPagina] = useState("inicio");
     const [seleccionado, setSeleccionado] = useState("");
     const [carrito, setCarrito] = useState(JSON.parse(localStorage.getItem("carrito")) || []);
     const [mensaje, setMensaje] = useState("");
 
+    //Esta función es la que cambia los estados y le entrega un id como parámetro y lo setea, 
+    // actualiza el estado página para indicar a que página debe ir
     function irA(nuevaPagina, id = "") {
         setPagina(nuevaPagina);
         setSeleccionado(id);
@@ -41,18 +49,21 @@ function App() {
         window.scrollTo(0, 0);
     }
 
+    //Guarda el nuevo carrito y lo setea por si se recarga la página
     function guardarCarrito(nuevoCarrito) {
         setCarrito(nuevoCarrito);
         localStorage.setItem("carrito", JSON.stringify(nuevoCarrito));
     }
 
+    //se agrega un nuevo producto en el carrito y cuenta si excede el stock en el if, si lo excede tira el mensaje de error, si no,
+    //ejecuta guardar carrito (el producto en el carrito)
     function agregarAlCarrito(codigo, cantidad) {
         const producto = productos.find(p => p.codigo === codigo);
         const linea = carrito.find(l => l.codigo === codigo);
         const cantidadActual = linea ? linea.cantidad : 0;
 
         if (cantidadActual + cantidad > producto.stock) {
-            setMensaje(`No hay más stock disponible de ${producto.nombre}. Máximo: ${producto.stock}.`);
+            setMensaje(No hay más stock disponible de ${producto.nombre}. Máximo: ${producto.stock}.);
             return;
         }
 
@@ -62,13 +73,15 @@ function App() {
             guardarCarrito([...carrito, { codigo, cantidad }]);
         }
 
-        setMensaje(`${producto.nombre} fue agregado al carrito.`);
+        setMensaje(${producto.nombre} fue agregado al carrito.);
     }
 
+    //No necesita comentario, elimina el producto con el código que se le entrega.    
     function eliminarDelCarrito(codigo) {
         guardarCarrito(carrito.filter(l => l.codigo !== codigo));
     }
 
+    //Lo mismo, cambia la cantidad del producto con el c´pidog que se le entrega
     function cambiarCantidad(codigo, cantidad) {
         const producto = productos.find(p => p.codigo === codigo);
 
@@ -78,7 +91,7 @@ function App() {
         }
 
         if (cantidad > producto.stock) {
-            setMensaje(`No puedes superar el stock disponible de ${producto.stock} unidades.`);
+            setMensaje(No puedes superar el stock disponible de ${producto.stock} unidades.);
             return;
         }
 
@@ -90,6 +103,8 @@ function App() {
         cantidadTotal += linea.cantidad;
     }
 
+    //de acá hacia abajo simplemente cambia la página dependiendo de si en entra con administrador o usuario.
+    //dependiendo del estado de la constante página que se inicializa al principio del código
     if (pagina.startsWith("admin")) {
         return (
             <Container fluid>
